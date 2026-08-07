@@ -32,9 +32,9 @@ from src.artifacts import (
 
 from src.preprocessing import clean_text
 
-from config import Config
+from src.config import Config
 
-from logger import get_logger
+from src.logger import get_logger
 
 
 logger = get_logger(__name__)

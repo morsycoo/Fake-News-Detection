@@ -1,0 +1,21 @@
+{
+    "project": "Fake News Detection",
+    "model": "Linear SVM",
+    "algorithm": "LinearSVC",
+    "vectorizer": "TF-IDF",
+    "feature_selector": "SelectKBest",
+    "selected_features": 10000,
+    "ngram_range": [
+        1,
+        2
+    ],
+    "training_samples": 35918,
+    "testing_samples": 8980,
+    "accuracy": 0.99666,
+    "precision": 0.99442,
+    "recall": 0.9986,
+    "f1": 0.99651,
+    "roc_auc": 0.99995,
+    "pr_auc": 0.99995,
+    "training_date": "2026-08-07 04:19:51"
+}
