@@ -2567,7 +2567,7 @@ Recommended Operating Systems
 # 📥 Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Fake-News-Detection.git
+git clone https://github.com/morsycoo/Fake-News-Detection.git
 
 cd Fake-News-Detection
 ```
@@ -2998,7 +2998,7 @@ Not
 # ✅ Quick Start
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Fake-News-Detection.git
+git clone https://github.com/morsycoo/Fake-News-Detection.git
 
 cd Fake-News-Detection
 
@@ -3283,9 +3283,3 @@ I am always interested in discussing:
 If this repository helped you learn something new or inspired your own projects, consider giving it a ⭐ on GitHub.
 
 Happy Coding! 🚀
-
-</div>
->
-> **Deployment:** FastAPI + Docker
->
-> **Testing:** Pytest + GitHub Actions
