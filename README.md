@@ -1211,3 +1211,338 @@ After preprocessing and feature engineering, every news article is transformed f
 This optimized feature matrix becomes the input for the machine learning models discussed in the next section.
 
 ---
+
+# 🤖 Machine Learning Models
+
+After transforming the news articles into numerical feature vectors using **TF-IDF** and **Chi-Square Feature Selection**, several classical Machine Learning algorithms were trained and compared.
+
+Instead of selecting a model based on popularity, each algorithm was evaluated using multiple performance metrics, computational efficiency, and production suitability.
+
+The following models were implemented and benchmarked.
+
+---
+
+# 🧠 Model Selection Workflow
+
+```text
+Feature Matrix
+      │
+      ▼
+Naive Bayes
+      │
+      ▼
+Logistic Regression
+      │
+      ▼
+Linear Support Vector Machine
+      │
+      ▼
+Performance Comparison
+      │
+      ▼
+Hyperparameter Optimization
+      │
+      ▼
+Final Production Model
+```
+
+---
+
+# 📌 Model 1 — Multinomial Naive Bayes
+
+## Overview
+
+Multinomial Naive Bayes is one of the most widely used baseline algorithms for text classification.
+
+It estimates the probability of each class using **Bayes' Theorem** under the assumption that features are conditionally independent.
+
+Although this assumption is rarely true in natural language, the model often performs surprisingly well on sparse text representations such as TF-IDF.
+
+---
+
+## Advantages
+
+- Extremely fast training
+- Very fast inference
+- Low memory usage
+- Excellent baseline model
+- Works well with sparse matrices
+
+---
+
+## Limitations
+
+- Assumes feature independence
+- Limited ability to capture complex relationships
+- Usually lower accuracy than discriminative models
+
+---
+
+## Training Configuration
+
+```python
+MultinomialNB()
+```
+
+---
+
+# 📌 Model 2 — Logistic Regression
+
+## Overview
+
+Logistic Regression is a linear classification algorithm that estimates the probability of each class using the sigmoid function.
+
+Unlike Naive Bayes, Logistic Regression learns a decision boundary directly from the data without assuming feature independence.
+
+It is widely used for binary text classification due to its simplicity, interpretability, and strong performance.
+
+---
+
+## Advantages
+
+- High interpretability
+- Robust linear classifier
+- Supports regularization
+- Produces probability estimates
+- Excellent baseline for binary classification
+
+---
+
+## Regularization
+
+The model uses regularization to reduce overfitting.
+
+Supported techniques include:
+
+- L1 Regularization
+- L2 Regularization
+- ElasticNet
+
+This project uses the default configuration optimized during experimentation.
+
+---
+
+## Training Configuration
+
+```python
+LogisticRegression(
+    max_iter=1000,
+    random_state=42
+)
+```
+
+---
+
+# 📌 Model 3 — Linear Support Vector Machine (Final Model)
+
+## Overview
+
+Linear Support Vector Machine (Linear SVM) was selected as the final production model.
+
+Instead of estimating probabilities directly, Linear SVM searches for the optimal hyperplane that maximizes the margin between classes.
+
+For high-dimensional sparse text representations such as TF-IDF, Linear SVM is widely recognized as one of the strongest classical NLP classifiers.
+
+---
+
+## Why Linear SVM?
+
+Linear SVM demonstrated the best overall performance across all evaluation metrics.
+
+It achieved:
+
+- Highest Accuracy
+- Highest F1 Score
+- Excellent Precision
+- Excellent Recall
+- Strong Generalization
+- Fast Prediction Speed
+
+These characteristics make it particularly suitable for production environments.
+
+---
+
+## Training Configuration
+
+```python
+LinearSVC(
+    C=10,
+    loss="squared_hinge",
+    random_state=42,
+    max_iter=10000
+)
+```
+
+---
+
+# ⚙️ Hyperparameter Optimization
+
+Selecting an appropriate algorithm is only part of the optimization process.
+
+The performance of each model is highly dependent on its hyperparameters.
+
+This project evaluates multiple configurations using systematic search strategies.
+
+---
+
+# 🔎 Grid Search
+
+Grid Search evaluates every possible combination of predefined hyperparameter values.
+
+Example
+
+```text
+C = [0.1, 1, 10, 100]
+```
+
+Evaluation Process
+
+```text
+C = 0.1
+↓
+
+Cross Validation
+
+↓
+
+F1 Score
+
+↓
+
+C = 1
+
+↓
+
+Cross Validation
+
+↓
+
+...
+
+↓
+
+Best Parameter
+```
+
+Advantages
+
+- Exhaustive search
+- Reliable
+- Finds the optimal value within the predefined search space
+
+Limitations
+
+- Computationally expensive
+- Slow for large search spaces
+
+---
+
+# 🎲 Random Search
+
+Random Search samples random combinations of hyperparameters instead of evaluating every possibility.
+
+Advantages
+
+- Much faster
+- Efficient on large search spaces
+- Often reaches near-optimal performance
+
+Limitations
+
+- May miss the absolute optimum
+- Performance depends on the number of iterations
+
+---
+
+# 🔁 Cross Validation
+
+To reduce bias during model evaluation, every experiment uses **K-Fold Cross Validation**.
+
+```text
+Dataset
+
+↓
+
+Fold 1 → Validation
+
+Fold 2 → Validation
+
+Fold 3 → Validation
+
+Fold 4 → Validation
+
+Fold 5 → Validation
+
+↓
+
+Average Performance
+```
+
+This strategy provides a more reliable estimate of the model's ability to generalize to unseen data.
+
+---
+
+# 📈 Hyperparameter Optimization Workflow
+
+```text
+Training Dataset
+        │
+        ▼
+Choose Model
+        │
+        ▼
+Grid Search / Random Search
+        │
+        ▼
+Cross Validation
+        │
+        ▼
+Evaluate Metrics
+        │
+        ▼
+Best Hyperparameters
+        │
+        ▼
+Final Model
+```
+
+---
+
+# 🏆 Model Comparison
+
+The three models were compared using multiple evaluation metrics rather than relying solely on accuracy.
+
+Evaluation criteria included:
+
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- ROC-AUC
+- PR-AUC
+- Training Time
+- Prediction Time
+- Model Complexity
+- Interpretability
+
+The complete benchmark table is presented in the next section.
+
+---
+
+# 🎯 Final Model Selection
+
+After extensive experimentation and hyperparameter tuning, **Linear Support Vector Machine** was selected as the production model.
+
+Reasons for selection:
+
+- Highest overall performance
+- Strong generalization capability
+- Excellent balance between Precision and Recall
+- Fast inference
+- Efficient memory usage
+- Well suited for sparse TF-IDF representations
+- Stable performance across validation folds
+
+The trained model, vectorizer, selector, configuration, and metadata are automatically exported as production artifacts for deployment.
+
+---
