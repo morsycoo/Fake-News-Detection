@@ -1546,3 +1546,275 @@ Reasons for selection:
 The trained model, vectorizer, selector, configuration, and metadata are automatically exported as production artifacts for deployment.
 
 ---
+
+# 📊 Model Evaluation & Performance Analysis
+
+After training and optimizing multiple machine learning models, a comprehensive evaluation was performed using several classification metrics.
+
+Instead of relying solely on **Accuracy**, this project evaluates model performance from multiple perspectives, including precision, recall, F1-score, ROC-AUC, Precision-Recall AUC, confusion matrices, and learning behavior.
+
+This comprehensive evaluation ensures that the selected production model generalizes well to unseen data.
+
+---
+
+# 📈 Benchmark Results
+
+The following table summarizes the performance of all evaluated models.
+
+| Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC | PR-AUC |
+|--------|---------:|----------:|--------:|----------:|--------:|--------:|
+| Naive Bayes | 0.9399 | 0.9390 | 0.9346 | 0.9368 | 0.9815 | 0.9796 |
+| Logistic Regression | 0.9840 | 0.9805 | 0.9860 | 0.9832 | 0.9983 | 0.9982 |
+| **Linear SVM** ⭐ | **0.9933** | **0.9921** | **0.9939** | **0.9930** | **0.9998** | **0.9998** |
+
+---
+
+# 🏆 Best Model
+
+After comparing all models, **Linear Support Vector Machine** was selected as the production model.
+
+### Reasons
+
+- Highest Accuracy
+- Highest F1 Score
+- Excellent Precision
+- Excellent Recall
+- Outstanding ROC-AUC
+- Excellent Precision-Recall Performance
+- Fast Inference
+- Low Memory Consumption
+
+---
+
+# 📌 Evaluation Metrics
+
+The following metrics were used throughout this project.
+
+---
+
+## Accuracy
+
+Measures the proportion of correctly classified samples.
+
+```text
+Accuracy = Correct Predictions / Total Predictions
+```
+
+Best used when classes are relatively balanced.
+
+---
+
+## Precision
+
+Measures how many predicted positive samples are actually positive.
+
+```text
+Precision = TP / (TP + FP)
+```
+
+High precision means fewer False Positives.
+
+---
+
+## Recall
+
+Measures how many real positive samples are correctly detected.
+
+```text
+Recall = TP / (TP + FN)
+```
+
+High recall means fewer False Negatives.
+
+---
+
+## F1 Score
+
+The harmonic mean between Precision and Recall.
+
+```text
+F1 = 2 × Precision × Recall
+     -----------------------
+      Precision + Recall
+```
+
+The primary optimization metric used during model selection.
+
+---
+
+## ROC-AUC
+
+Measures the classifier's ability to distinguish between classes across all possible thresholds.
+
+Values close to **1.0** indicate excellent separability.
+
+---
+
+## Precision-Recall AUC
+
+Particularly useful when dealing with imbalanced datasets.
+
+A higher PR-AUC indicates strong precision while maintaining high recall.
+
+---
+
+# 📉 Confusion Matrix
+
+The confusion matrix provides a detailed breakdown of prediction outcomes.
+
+```text
+                    Predicted
+
+               Fake      Real
+
+Actual Fake      TP         FN
+
+Actual Real      FP         TN
+```
+
+The goal is to maximize the diagonal values while minimizing classification errors.
+
+---
+
+## Confusion Matrix Visualization
+
+> Replace the placeholder below with your generated figure.
+
+```text
+assets/images/confusion_matrix.png
+```
+
+<p align="center">
+
+<img src="assets/images/confusion_matrix.png" width="650"/>
+
+</p>
+
+---
+
+# 📈 ROC Curve
+
+The Receiver Operating Characteristic (ROC) Curve illustrates the trade-off between the True Positive Rate and False Positive Rate.
+
+An ideal classifier approaches the upper-left corner of the graph.
+
+Linear SVM achieved an ROC-AUC score close to **1.0**, indicating excellent class separability.
+
+<p align="center">
+
+<img src="assets/images/roc_curve.png" width="700"/>
+
+</p>
+
+---
+
+# 📈 Precision–Recall Curve
+
+Precision-Recall curves are especially informative for binary classification tasks.
+
+They demonstrate how precision changes as recall increases.
+
+The production model maintains high precision even at high recall values.
+
+<p align="center">
+
+<img src="assets/images/pr_curve.png" width="700"/>
+
+</p>
+
+---
+
+# 📈 Learning Curve
+
+Learning curves help diagnose whether the model benefits from additional training data.
+
+Key observations:
+
+- Training and validation curves converge.
+- Small generalization gap.
+- No significant overfitting.
+- Stable learning behavior.
+
+<p align="center">
+
+<img src="assets/images/learning_curve.png" width="700"/>
+
+</p>
+
+---
+
+# 📉 Validation Curve
+
+Validation curves illustrate the impact of changing hyperparameters.
+
+The optimal **C** parameter was selected after evaluating multiple values using Cross Validation.
+
+<p align="center">
+
+<img src="assets/images/validation_curve.png" width="700"/>
+
+</p>
+
+---
+
+# 📊 Model Stability
+
+Model robustness was evaluated using K-Fold Cross Validation.
+
+Key findings:
+
+- Consistent performance across folds.
+- Low standard deviation.
+- Stable decision boundary.
+- Excellent generalization capability.
+
+---
+
+# 🎯 Why Accuracy Alone Is Not Enough
+
+Accuracy can be misleading, particularly for imbalanced datasets.
+
+Example:
+
+```text
+Dataset
+
+95% Real News
+
+5% Fake News
+```
+
+A model predicting **Real** for every article would achieve:
+
+```text
+Accuracy = 95%
+```
+
+while completely failing to detect fake news.
+
+For this reason, model selection was primarily based on:
+
+- Precision
+- Recall
+- F1 Score
+- ROC-AUC
+- PR-AUC
+
+rather than Accuracy alone.
+
+---
+
+# 📌 Performance Summary
+
+The final Linear SVM model demonstrated:
+
+- Excellent predictive accuracy.
+- Strong generalization.
+- Minimal overfitting.
+- Robust cross-validation performance.
+- Fast inference suitable for real-time prediction.
+- High confidence across both classes.
+
+These characteristics make the model suitable for deployment in production environments.
+
+---
