@@ -156,16 +156,6 @@ Unlike many educational notebooks, this repository demonstrates the complete lif
 
 ---
 
-> **Repository Status:** Production Ready ✅
->
-> **Primary Language:** Python
->
-> **Machine Learning Framework:** Scikit-Learn
->
-> **Deployment:** FastAPI + Docker
-
----
-
 # 📖 Problem Statement
 
 ## Background
@@ -388,7 +378,419 @@ These findings guided the design of the preprocessing pipeline and feature engin
 
 ---
 
+# 🧹 Data Preprocessing & Feature Engineering
 
+One of the most critical stages in any Natural Language Processing (NLP) project is transforming raw, unstructured text into meaningful numerical representations that machine learning algorithms can understand.
 
->
-> **Testing:** Pytest + GitHub Actions
+The quality of feature engineering often has a greater impact on model performance than the choice of algorithm itself.
+
+This project follows a structured preprocessing pipeline to maximize information while reducing noise.
+
+---
+
+# 🔄 Complete NLP Pipeline
+
+```text
+Raw News Articles
+        │
+        ▼
+Load CSV Files
+        │
+        ▼
+Merge Fake & Real Datasets
+        │
+        ▼
+Assign Binary Labels
+        │
+        ▼
+Text Cleaning
+        │
+        ▼
+Train/Test Split
+        │
+        ▼
+TF-IDF Vectorization
+        │
+        ▼
+SelectKBest (Chi²)
+        │
+        ▼
+Machine Learning Model
+```
+
+---
+
+# 📝 Text Cleaning Pipeline
+
+Before feature extraction, every article passes through multiple preprocessing steps.
+
+## Step 1 — Convert to Lowercase
+
+Example
+
+```text
+The PRESIDENT Announced New Policies
+```
+
+↓
+
+```text
+the president announced new policies
+```
+
+Purpose
+
+- Reduces vocabulary size
+- Treats "President" and "president" as the same token
+
+---
+
+## Step 2 — Remove URLs
+
+Input
+
+```text
+Visit https://news.com today.
+```
+
+↓
+
+Output
+
+```text
+Visit today.
+```
+
+Purpose
+
+URLs generally carry little semantic information for fake news classification.
+
+---
+
+## Step 3 — Remove HTML Tags
+
+Input
+
+```html
+<p>This is breaking news.</p>
+```
+
+↓
+
+Output
+
+```text
+This is breaking news.
+```
+
+Purpose
+
+HTML tags are formatting artifacts and do not contribute to the article's meaning.
+
+---
+
+## Step 4 — Remove Numbers
+
+Input
+
+```text
+COVID cases reached 14500 yesterday.
+```
+
+↓
+
+Output
+
+```text
+COVID cases reached yesterday.
+```
+
+Purpose
+
+Large numerical values often introduce noise and increase vocabulary sparsity.
+
+---
+
+## Step 5 — Remove Punctuation
+
+Input
+
+```text
+Breaking!!! New discovery???
+```
+
+↓
+
+Output
+
+```text
+Breaking New discovery
+```
+
+Purpose
+
+Machine learning models benefit from standardized text without punctuation symbols.
+
+---
+
+## Step 6 — Remove Extra Spaces
+
+Input
+
+```text
+Machine      Learning
+```
+
+↓
+
+Output
+
+```text
+Machine Learning
+```
+
+Purpose
+
+Produces consistent formatting before vectorization.
+
+---
+
+# 📊 Train / Test Split
+
+The dataset is divided before feature engineering.
+
+| Split | Percentage |
+|--------|-----------:|
+| Training | 80% |
+| Testing | 20% |
+
+Why?
+
+The model should never see testing samples during training.
+
+This ensures a fair estimate of real-world performance.
+
+---
+
+# 🎯 TF-IDF Vectorization
+
+## Why TF-IDF?
+
+Machine Learning models cannot understand raw text.
+
+Instead, every article must be transformed into a numerical feature vector.
+
+TF-IDF (Term Frequency–Inverse Document Frequency) assigns higher importance to informative words while reducing the impact of common words.
+
+Example
+
+| Word | Frequency | Importance |
+|------|----------:|-----------:|
+| government | High | Medium |
+| election | Medium | High |
+| the | Very High | Very Low |
+
+---
+
+# 📐 TF-IDF Formula
+
+```text
+TF-IDF = TF × IDF
+```
+
+Where
+
+TF
+
+```text
+Term Frequency
+```
+
+IDF
+
+```text
+Inverse Document Frequency
+```
+
+Words that appear in many documents receive lower weights.
+
+Words unique to a small number of documents receive higher weights.
+
+---
+
+# ⚙️ TF-IDF Configuration
+
+```python
+TfidfVectorizer(
+
+    stop_words="english",
+
+    ngram_range=(1,2),
+
+    lowercase=True,
+
+    sublinear_tf=True
+
+)
+```
+
+Configuration Summary
+
+| Parameter | Value |
+|-----------|-------|
+| stop_words | english |
+| ngram_range | (1,2) |
+| lowercase | True |
+| sublinear_tf | True |
+
+---
+
+# 🔍 Why Bigrams?
+
+Instead of using only individual words,
+
+the model also learns two-word phrases.
+
+Example
+
+```text
+fake
+```
+
+↓
+
+```text
+fake news
+```
+
+↓
+
+```text
+white house
+```
+
+↓
+
+```text
+new york
+```
+
+This significantly improves contextual understanding.
+
+---
+
+# 🎯 Feature Selection
+
+After TF-IDF, the feature space becomes extremely large.
+
+Many features contribute little or no useful information.
+
+To reduce noise and improve efficiency, this project applies:
+
+```text
+SelectKBest
+```
+
+using
+
+```text
+Chi-Square (χ²)
+```
+
+---
+
+# 📈 Chi-Square Feature Selection
+
+Purpose
+
+Rank every feature according to its relationship with the target class.
+
+Only the strongest features are retained.
+
+Pipeline
+
+```text
+TF-IDF
+
+↓
+
+Thousands of Features
+
+↓
+
+Chi-Square Ranking
+
+↓
+
+Top 10,000 Features
+
+↓
+
+Linear SVM
+```
+
+---
+
+# ⚙️ Feature Selection Configuration
+
+```python
+SelectKBest(
+
+    score_func=chi2,
+
+    k=10000
+
+)
+```
+
+| Parameter | Value |
+|-----------|-------|
+| Method | Chi-Square |
+| Selected Features | 10,000 |
+
+---
+
+# 📦 Final Feature Pipeline
+
+```text
+Raw Text
+    │
+    ▼
+Cleaning
+    │
+    ▼
+TF-IDF
+    │
+    ▼
+SelectKBest
+    │
+    ▼
+Sparse Feature Matrix
+```
+
+The resulting sparse matrix is then passed directly to the machine learning classifier.
+
+---
+
+# 💡 Why This Pipeline?
+
+This combination was chosen because it offers an excellent balance between:
+
+- High predictive performance
+- Fast training
+- Fast inference
+- Low memory consumption
+- Good interpretability
+- Scalability for large datasets
+
+Compared to dense embeddings, TF-IDF + Chi-Square remains a strong baseline for classical NLP classification tasks.
+
+---
+
+# ✅ Output of This Stage
+
+After preprocessing and feature engineering, every news article is transformed from raw text into a compact numerical representation containing only the most informative features.
+
+This optimized feature matrix becomes the input for the machine learning models discussed in the next section.
+
+---
