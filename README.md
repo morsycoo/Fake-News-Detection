@@ -163,5 +163,232 @@ Unlike many educational notebooks, this repository demonstrates the complete lif
 > **Machine Learning Framework:** Scikit-Learn
 >
 > **Deployment:** FastAPI + Docker
+
+---
+
+# 📖 Problem Statement
+
+## Background
+
+The rapid growth of online news platforms and social media has dramatically increased the spread of misinformation. Fake news can influence public opinion, manipulate financial markets, affect elections, and create widespread confusion.
+
+Traditional manual fact-checking is often too slow to keep pace with the volume of newly published articles. Consequently, automated Fake News Detection has become one of the most important Natural Language Processing (NLP) applications.
+
+This project aims to build a reliable Machine Learning system capable of automatically classifying news articles as **Real** or **Fake** using textual content alone.
+
+---
+
+# 🎯 Project Objectives
+
+The main objectives of this project are:
+
+- Develop a highly accurate fake news classifier.
+- Build a complete end-to-end NLP pipeline.
+- Compare multiple Machine Learning algorithms.
+- Analyze model errors and prediction confidence.
+- Produce explainable model predictions.
+- Package the model into a production-ready REST API.
+- Ensure reproducibility through experiment tracking.
+- Follow software engineering best practices.
+
+---
+
+# ❓ Why Linear SVM?
+
+Several machine learning algorithms were evaluated throughout this project.
+
+The final model selected for deployment was **Linear Support Vector Machine (Linear SVM)** because it provided the best overall balance between:
+
+- Classification Accuracy
+- Precision
+- Recall
+- F1 Score
+- Generalization Performance
+- Inference Speed
+
+Compared to Logistic Regression and Naive Bayes, Linear SVM achieved the highest overall performance on the test set while maintaining excellent robustness.
+
+---
+
+# 🗂 Dataset
+
+This project uses the widely adopted **Fake and Real News Dataset**, containing two independent collections of news articles.
+
+| File | Description |
+|------|-------------|
+| Fake.csv | Fake news articles |
+| True.csv | Legitimate news articles |
+
+The datasets were merged into a single binary classification dataset.
+
+---
+
+# 📊 Dataset Statistics
+
+| Statistic | Value |
+|-----------|------:|
+| Total Articles | **44,898** |
+| Fake Articles | **23,481** |
+| Real Articles | **21,417** |
+| Number of Classes | **2** |
+| Classification Type | Binary |
+| Input Feature | News Text |
+| Target Variable | Label |
+
+---
+
+# 🏷 Target Labels
+
+The classification labels are encoded as follows:
+
+| Label | Meaning |
+|-------|---------|
+| 0 | Fake News |
+| 1 | Real News |
+
+The label mapping is saved during training as:
+
+```text
+artifacts/label_mapping.json
+```
+
+---
+
+# 📁 Dataset Structure
+
+```text
+data/
+
+├── Fake.csv
+└── True.csv
+```
+
+Each dataset contains multiple columns describing the news article.
+
+Typical columns include:
+
+| Column | Description |
+|--------|-------------|
+| title | News headline |
+| text | Full article |
+| subject | Article category |
+| date | Publication date |
+
+Only the textual information is used for model training.
+
+---
+
+# 🔀 Data Pipeline
+
+The complete data preparation workflow follows the pipeline below:
+
+```text
+Raw CSV Files
+      │
+      ▼
+Load Dataset
+      │
+      ▼
+Merge Fake & Real Articles
+      │
+      ▼
+Assign Binary Labels
+      │
+      ▼
+Shuffle Dataset
+      │
+      ▼
+Text Cleaning
+      │
+      ▼
+Feature Engineering
+      │
+      ▼
+Train / Test Split
+```
+
+---
+
+# ⚖ Class Distribution
+
+The dataset is well balanced, reducing the need for aggressive sampling techniques.
+
+| Class | Samples | Percentage |
+|------|---------:|-----------:|
+| Fake | 23,481 | 52.30% |
+| Real | 21,417 | 47.70% |
+
+The near-balanced distribution helps the model learn both classes effectively without severe class imbalance.
+
+---
+
+# 📝 Sample News Article
+
+### Example (Real)
+
+```text
+Reuters - The President met with international leaders today to discuss economic cooperation...
+```
+
+↓
+
+Label
+
+```text
+Real
+```
+
+---
+
+### Example (Fake)
+
+```text
+BREAKING!!! Scientists confirm that aliens have secretly taken control of the White House...
+```
+
+↓
+
+Label
+
+```text
+Fake
+```
+
+---
+
+# 💡 Challenges in Fake News Detection
+
+Fake news classification is significantly more difficult than standard text classification due to several challenges:
+
+- Highly similar writing styles
+- Political bias
+- Clickbait headlines
+- Long-form articles
+- Named entities
+- Ambiguous language
+- Mixed factual and misleading content
+
+These challenges motivated the extensive preprocessing, feature engineering, and error analysis performed throughout this project.
+
+---
+
+# 📌 Key Dataset Insights
+
+During exploratory analysis, several important observations were made:
+
+- The dataset is nearly balanced.
+- News articles vary greatly in length.
+- Many articles contain URLs and HTML artifacts.
+- Political topics dominate both classes.
+- Vocabulary size exceeds one hundred thousand unique tokens before feature selection.
+- TF-IDF significantly improves feature representation.
+- SelectKBest effectively removes noisy features while preserving informative terms.
+
+These findings guided the design of the preprocessing pipeline and feature engineering strategy used in the final production model.
+
+---
+
+
+
 >
 > **Testing:** Pytest + GitHub Actions
