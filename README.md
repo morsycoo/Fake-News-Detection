@@ -4,6 +4,14 @@
 ### Production-Ready NLP Pipeline for Fake News Classification using Machine Learning
 
 <p align="center">
+  <img
+    src="assets/Fake_News_Detection.png"
+    alt="Fake News Detection"
+    width="100%"
+  />
+</p>
+
+<p align="center">
 
 ![Python](https://img.shields.io/badge/Python-3.13-blue?style=for-the-badge&logo=python)
 ![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-ML-orange?style=for-the-badge&logo=scikitlearn)
