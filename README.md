@@ -3218,7 +3218,7 @@ https://github.com/morsycoo
 
 ### LinkedIn
 
-https://www.linkedin.com/in/mahmudmursi/
+https://www.linkedin.com/in/morsycoo
 
 ### Kaggle
 
